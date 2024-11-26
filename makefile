@@ -1,4 +1,4 @@
-dev := $(shell xcode-select --print-path)/Platforms/iPhoneOS.platform/Developer
+dev := /Developer/Platforms/iPhoneOS.platform/Developer
 sdks := $(dev)/SDKs
 ioss := $(sort $(patsubst $(sdks)/iPhoneOS%.sdk,%,$(wildcard $(sdks)/iPhoneOS*.sdk)))
 ios := 3.2
@@ -21,7 +21,7 @@ dpkg := /Library/Cydia/bin/dpkg-deb
 ifeq ($(wildcard $(dpkg)),$(dpkg))
 dpkg := $(dpkg) -zlzma
 else
-dpkg := dpkg-deb -zbzip2
+dpkg := dpkg-deb -Zgzip
 endif
 else
 dpkg := dpkg-deb -Zgzip
@@ -78,11 +78,11 @@ backrow += -FAppleTV -framework BackRow -framework AppleTV
 
 version := $(shell ./version.sh)
 
-cycc = $(gxx) -mthumb -arch armv7 -o $@ -miphoneos-version-min=2.0 -isysroot $(sdk) -idirafter /usr/include -F{sysroot,}/Library/Frameworks
+cycc = $(gxx) -mthumb -arch armv6 -o $@ -miphoneos-version-min=2.0 -isysroot $(sdk) -idirafter /usr/include -F{sysroot,}/Library/Frameworks
 #cycc = cycc -r4.2 -i$(ios) -o$@
 
 ifneq ($(gcc),)
-cycc += -Xarch_armv7 -mcpu=arm1176jzf-s
+cycc += -Xarch_armv6 -mcpu=arm1176jzf-s
 endif
 
 dirs := Menes CyteKit Cydia SDURLCache
