@@ -1,7 +1,7 @@
 dev := $(shell xcode-select --print-path)/Platforms/iPhoneOS.platform/Developer
 sdks := $(dev)/SDKs
 ioss := $(sort $(patsubst $(sdks)/iPhoneOS%.sdk,%,$(wildcard $(sdks)/iPhoneOS*.sdk)))
-ios := $(word $(words $(ioss)),$(ioss))
+ios := 3.2
 
 # if you can tolerate clang, set this to blank
 gcc := 4.2
@@ -24,7 +24,7 @@ else
 dpkg := dpkg-deb -zbzip2
 endif
 else
-dpkg := dpkg-deb
+dpkg := dpkg-deb -Zgzip
 endif
 
 sdk := $(sdks)/iPhoneOS$(ios).sdk
