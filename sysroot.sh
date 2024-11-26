@@ -1,7 +1,7 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 
-if [[ ${BASH_VERSION} != 4* ]]; then
-    echo "bash 4.0 required. Please read compiling.txt." 1>&2
+if [ "${BASH_VERSION%%.*}" -lt 4 ]; then
+    echo "bash 4.0 or newer required. Please read compiling.txt." 1>&2
     exit 1
 fi
 
@@ -110,16 +110,16 @@ mkdir -p usr/include
 cd usr/include
 
 mkdir CoreFoundation
-wget -O CoreFoundation/CFBundlePriv.h "http://www.opensource.apple.com/source/CF/CF-550/CFBundlePriv.h?txt"
-wget -O CoreFoundation/CFPriv.h "http://www.opensource.apple.com/source/CF/CF-550/CFPriv.h?txt"
-wget -O CoreFoundation/CFUniChar.h "http://www.opensource.apple.com/source/CF/CF-550/CFUniChar.h?txt"
+wget -O CoreFoundation/CFBundlePriv.h "https://raw.githubusercontent.com/apple-oss-distributions/CF/refs/tags/CF-550/CFBundlePriv.h"
+wget -O CoreFoundation/CFPriv.h "https://raw.githubusercontent.com/apple-oss-distributions/CF/refs/tags/CF-550/CFPriv.h"
+wget -O CoreFoundation/CFUniChar.h "https://raw.githubusercontent.com/apple-oss-distributions/CF/refs/tags/CF-550/CFUniChar.h"
 
 if true; then
     mkdir -p WebCore
-    wget -O WebCore/WebCoreThread.h 'http://www.opensource.apple.com/source/WebCore/WebCore-658.28/wak/WebCoreThread.h?txt'
-    wget -O WebCore/WebEvent.h 'http://www.opensource.apple.com/source/WebCore/WebCore-658.28/platform/iphone/WebEvent.h?txt'
+    wget -O WebCore/WebCoreThread.h 'https://raw.githubusercontent.com/apple-oss-distributions/WebCore/refs/tags/WebCore-658.28/wak/WebCoreThread.h'
+    wget -O WebCore/WebEvent.h 'https://raw.githubusercontent.com/apple-oss-distributions/WebCore/refs/tags/WebCore-658.28/platform/iphone/WebEvent.h'
 else
-    wget -O WebCore.tgz http://www.opensource.apple.com/tarballs/WebCore/WebCore-658.28.tar.gz
+    wget -O WebCore.tgz https://github.com/apple-oss-distributions/WebCore/archive/refs/tags/WebCore-658.28.tar.gz
     gtar -zx --transform 's@^[^/]*/@WebCore.d/@' -f WebCore.tgz
 
     mkdir WebCore
@@ -128,7 +128,7 @@ else
     cp -a WebCore.d/{accessibility,platform{,/{graphics,network,text}}}/{cf,mac,iphone}/*.h WebCore
     cp -a WebCore.d/bridge/objc/*.h WebCore
 
-    wget -O JavaScriptCore.tgz http://www.opensource.apple.com/tarballs/JavaScriptCore/JavaScriptCore-554.1.tar.gz
+    wget -O JavaScriptCore.tgz https://github.com/apple-oss-distributions/JavaScriptCore/archive/refs/tags/JavaScriptCore-554.1.tar.gz
     #gtar -zx --transform 's@^[^/]*/API/@JavaScriptCore/@' -f JavaScriptCore.tgz $(gtar -ztf JavaScriptCore.tgz | grep '/API/[^/]*.h$')
     gtar -zx \
         --transform 's@^[^/]*/@@' \
